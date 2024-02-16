@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/course_erp_db
+    username: erp
+    password: erp5
