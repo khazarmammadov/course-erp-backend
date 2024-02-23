@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  db:
+    container_name: course-erp-db
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=course_erp_db
+      - POSTGRES_USER=erp
+      - POSTGRES_PASSWORD=erp5
+    ports:
+      - 5432:5432
