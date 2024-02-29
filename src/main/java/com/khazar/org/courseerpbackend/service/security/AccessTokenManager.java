@@ -33,7 +33,7 @@ public class AccessTokenManager implements TokenGenerator<User>, TokenReader<Cla
                 .setSubject(String.valueOf(obj.getId()))
                 .setIssuedAt(now)
                 .setExpiration(exp)
-                .setClaims(claims)
+                .addClaims(claims)
                 .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
