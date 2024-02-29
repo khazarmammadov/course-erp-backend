@@ -1,9 +1,9 @@
 package com.khazar.org.courseerpbackend.service.security;
 
+import com.khazar.org.courseerpbackend.models.dto.RefreshTokenDto;
 import com.khazar.org.courseerpbackend.models.mybatis.user.User;
 import com.khazar.org.courseerpbackend.models.properties.security.SecurityProperties;
 import com.khazar.org.courseerpbackend.service.base.TokenGenerator;
-import com.khazar.org.courseerpbackend.service.base.TokenReader;
 import com.khazar.org.courseerpbackend.utils.PublicPrivateKeyUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,33 +17,27 @@ import java.util.Date;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class AccessTokenManager implements TokenGenerator<User>, TokenReader<Claims> {
+public class RefreshTokenManager implements TokenGenerator<RefreshTokenDto> {
 
     private final SecurityProperties securityProperties;
     @Override
-    public String generate(User obj) {
+    public String generate(RefreshTokenDto obj) {
+
+        final User user = obj.getUser();
 
         Claims claims = Jwts.claims();
-        claims.put("email", obj.getEmail());
+        claims.put("email", user.getEmail());
+        claims.put("type", "REFRESH_TOKEN");
 
         Date now = new Date();
-        Date exp = new Date(now.getTime() + securityProperties.getJwt().getAccessTokenValidityTime());
+        Date exp = new Date(now.getTime() + securityProperties.getJwt().getRefreshTokenValidityTime(obj.isRememberMe()));
 
         return Jwts.builder()
-                .setSubject(String.valueOf(obj.getId()))
+                .setSubject(String.valueOf(user.getId()))
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .setClaims(claims)
                 .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
-    }
-
-    @Override
-    public Claims reader(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(PublicPrivateKeyUtils.getPublicKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
     }
 }
