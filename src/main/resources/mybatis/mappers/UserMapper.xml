@@ -9,5 +9,9 @@
 
     </insert>
 
+    <select id="findByEmail" resultType="User">
+        select * from users u where u.email = #{email} and u.is_deleted = false
+    </select>
+
 
 </mapper>
