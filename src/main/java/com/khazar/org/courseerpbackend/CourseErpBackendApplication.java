@@ -1,8 +1,10 @@
 package com.khazar.org.courseerpbackend;
 
+import com.khazar.org.courseerpbackend.models.enums.user.UserStatus;
 import com.khazar.org.courseerpbackend.models.mybatis.user.User;
 import com.khazar.org.courseerpbackend.models.properties.security.SecurityProperties;
 import com.khazar.org.courseerpbackend.service.security.AccessTokenManager;
+import com.khazar.org.courseerpbackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,15 +27,24 @@ public class CourseErpBackendApplication implements CommandLineRunner {
 
     private final SecurityProperties securityProperties;
     private final AccessTokenManager accessTokenManager;
+    private final UserService userService;
     @Override
     public void run(String... args) throws Exception {
 
         System.out.println(securityProperties.getJwt());
 
         User user = User.builder()
+                .name("Johny")
+                .surname("Test")
                 .email("kh@gmail.com")
+                .password("d1234567")
+                .roleId(1L)
+                .phoneNumber("+12345678")
+                .status(UserStatus.ACTIVE)
                 .build();
         user.setId(3L);
+
+        userService.insertUser(user);
 
         System.out.println(accessTokenManager.generate(user));
 

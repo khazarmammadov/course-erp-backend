@@ -1,4 +1,4 @@
-package com.khazar.org.courseerpbackend.models.payoad.auth;
+package com.khazar.org.courseerpbackend.models.payload.auth;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
