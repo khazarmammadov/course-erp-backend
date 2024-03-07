@@ -31,22 +31,22 @@ public class CourseErpBackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println(securityProperties.getJwt());
-
-        User user = User.builder()
-                .name("Johny")
-                .surname("Test")
-                .email("kh@gmail.com")
-                .password("d1234567")
-                .roleId(1L)
-                .phoneNumber("+12345678")
-                .status(UserStatus.ACTIVE)
-                .build();
-        user.setId(3L);
-
-        userService.insertUser(user);
-
-        System.out.println(accessTokenManager.generate(user));
+//        System.out.println(securityProperties.getJwt());
+//
+//        User user = User.builder()
+//                .name("Johny")
+//                .surname("Test")
+//                .email("kh@gmail.com")
+//                .password("d1234567")
+//                .roleId(1L)
+//                .phoneNumber("+12345678")
+//                .status(UserStatus.ACTIVE)
+//                .build();
+//        user.setId(3L);
+//
+//        userService.insertUser(user);
+//
+//        System.out.println(accessTokenManager.generate(user));
 
 //        KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
 //        keyGenerator.initialize(2048);
@@ -65,21 +65,21 @@ public class CourseErpBackendApplication implements CommandLineRunner {
 
     }
 
-    private static String convertToPrivateKey(String key) {
-        StringBuilder result = new StringBuilder();
-        result.append("-----BEGIN PRIVATE KEY-----\n");
-        result.append(key);
-        result.append("\n-----END PRIVATE KEY-----");
-        return result.toString();
-    }
-
-    private static String convertToPublicKey(String key) {
-        StringBuilder result = new StringBuilder();
-        result.append("-----BEGIN PUBLIC KEY-----\n");
-        result.append(key);
-        result.append("\n-----END PUBLIC KEY-----");
-        return result.toString();
-    }
+//    private static String convertToPrivateKey(String key) {
+//        StringBuilder result = new StringBuilder();
+//        result.append("-----BEGIN PRIVATE KEY-----\n");
+//        result.append(key);
+//        result.append("\n-----END PRIVATE KEY-----");
+//        return result.toString();
+//    }
+//
+//    private static String convertToPublicKey(String key) {
+//        StringBuilder result = new StringBuilder();
+//        result.append("-----BEGIN PUBLIC KEY-----\n");
+//        result.append(key);
+//        result.append("\n-----END PUBLIC KEY-----");
+//        return result.toString();
+//    }
 }
 
 

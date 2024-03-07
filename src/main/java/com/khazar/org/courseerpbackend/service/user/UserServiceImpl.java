@@ -1,5 +1,6 @@
 package com.khazar.org.courseerpbackend.service.user;
 
+import com.khazar.org.courseerpbackend.exception.BaseException;
 import com.khazar.org.courseerpbackend.models.mybatis.user.User;
 import com.khazar.org.courseerpbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("User not found")
+        return userRepository.findByEmail(email)
+                .orElseThrow( () -> BaseException.notFound(User.class.getSimpleName(), "email", email)
         );
     }
 }
