@@ -1,8 +1,10 @@
 package com.khazar.org.courseerpbackend.controller;
 
 import com.khazar.org.courseerpbackend.models.base.BaseResponse;
+import com.khazar.org.courseerpbackend.models.mappers.UserEntityMapper;
 import com.khazar.org.courseerpbackend.models.payload.auth.LoginPayload;
 import com.khazar.org.courseerpbackend.models.payload.auth.RefreshTokenPayload;
+import com.khazar.org.courseerpbackend.models.payload.auth.SignUpPayload;
 import com.khazar.org.courseerpbackend.models.response.LoginResponse;
 import com.khazar.org.courseerpbackend.service.security.AuthBusinessService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,13 @@ public class AuthController {
     @PostMapping("/logout")
     public BaseResponse<Void> logout() {
         authBusinessService.logout();
+        return BaseResponse.success();
+    }
+
+    @PostMapping("/sign-up")
+    public BaseResponse<Void> signUp(@RequestBody SignUpPayload payload) {
+//        System.out.println(UserEntityMapper.INSTANCE.fromSignUpPayloadToUser(payload, "1234123", 1L));
+        authBusinessService.signUp(payload);
         return BaseResponse.success();
     }
 }

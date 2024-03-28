@@ -8,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.*;
 
-import static com.khazar.org.courseerpbackend.models.enums.response.ErrorResponseMessages.NOT_FOUND;
-import static com.khazar.org.courseerpbackend.models.enums.response.ErrorResponseMessages.UNEXPECTED;
+import static com.khazar.org.courseerpbackend.models.enums.response.ErrorResponseMessages.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,7 +16,7 @@ import static com.khazar.org.courseerpbackend.models.enums.response.ErrorRespons
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BaseException extends RuntimeException{
+public class BaseException extends RuntimeException {
 
     ResponseMessages responseMessage;
     NotFoundExceptionType notFoundData;
@@ -27,11 +26,14 @@ public class BaseException extends RuntimeException{
         return responseMessage.message();
     }
 
-    public static BaseException unexpected() {
-        return BaseException.builder()
-                .responseMessage(UNEXPECTED)
-                .build();
+    public static  BaseException of(ResponseMessages responseMessages) {
+        return BaseException.builder().responseMessage(responseMessages).build();
     }
+
+    public static BaseException unexpected() {
+        return of(UNEXPECTED);
+    }
+
 
     public static BaseException notFound(String target, String filed, String value) {
         return BaseException.builder()

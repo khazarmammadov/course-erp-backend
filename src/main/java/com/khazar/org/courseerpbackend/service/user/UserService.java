@@ -5,4 +5,5 @@ import com.khazar.org.courseerpbackend.models.mybatis.user.User;
 public interface UserService {
     void insertUser(User user);
     User getByEmail(String email);
+    boolean checkByEmail(String email);
 }
