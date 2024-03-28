@@ -2,13 +2,16 @@ package com.khazar.org.courseerpbackend.service.security;
 
 import com.khazar.org.courseerpbackend.exception.BaseException;
 import com.khazar.org.courseerpbackend.models.dto.RefreshTokenDto;
+import com.khazar.org.courseerpbackend.models.mappers.CourseEntityMapper;
 import com.khazar.org.courseerpbackend.models.mappers.UserEntityMapper;
+import com.khazar.org.courseerpbackend.models.mybatis.course.Course;
 import com.khazar.org.courseerpbackend.models.mybatis.role.Role;
 import com.khazar.org.courseerpbackend.models.mybatis.user.User;
 import com.khazar.org.courseerpbackend.models.payload.auth.LoginPayload;
 import com.khazar.org.courseerpbackend.models.payload.auth.RefreshTokenPayload;
 import com.khazar.org.courseerpbackend.models.payload.auth.SignUpPayload;
 import com.khazar.org.courseerpbackend.models.response.LoginResponse;
+import com.khazar.org.courseerpbackend.service.course.CourseService;
 import com.khazar.org.courseerpbackend.service.role.RoleService;
 import com.khazar.org.courseerpbackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
+    private final CourseService courseService;
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -75,6 +79,9 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
                 defaultRole.getId());
 
         userService.insertUser(user);
+
+        Course course = CourseEntityMapper.INSTANCE.fromSignUpPayload(payload);
+        courseService.insert(course);
 
     }
 
