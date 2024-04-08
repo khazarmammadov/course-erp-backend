@@ -14,6 +14,6 @@ public interface CourseEntityMapper {
     CourseEntityMapper INSTANCE = Mappers.getMapper(CourseEntityMapper.class);
 
     @Mapping(target = "name", source = "courseName")
-    @Mapping(target = "status" , source = "ACTIVE")
+    @Mapping(target = "status" , constant = "ACTIVE")
     Course fromSignUpPayload(SignUpPayload payload);
 }

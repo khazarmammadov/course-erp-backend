@@ -1,5 +1,6 @@
 package com.khazar.org.courseerpbackend.models.mybatis.branch;
 
+import com.khazar.org.courseerpbackend.models.enums.branch.BranchStatus;
 import com.khazar.org.courseerpbackend.models.mybatis.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class Branch extends BaseEntity {
 
     String name;
+    BranchStatus status;
     String address;
     Double lat;
     Double lon;

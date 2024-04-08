@@ -2,8 +2,10 @@ package com.khazar.org.courseerpbackend.service.security;
 
 import com.khazar.org.courseerpbackend.exception.BaseException;
 import com.khazar.org.courseerpbackend.models.dto.RefreshTokenDto;
+import com.khazar.org.courseerpbackend.models.enums.branch.BranchStatus;
 import com.khazar.org.courseerpbackend.models.mappers.CourseEntityMapper;
 import com.khazar.org.courseerpbackend.models.mappers.UserEntityMapper;
+import com.khazar.org.courseerpbackend.models.mybatis.branch.Branch;
 import com.khazar.org.courseerpbackend.models.mybatis.course.Course;
 import com.khazar.org.courseerpbackend.models.mybatis.role.Role;
 import com.khazar.org.courseerpbackend.models.mybatis.user.User;
@@ -11,6 +13,7 @@ import com.khazar.org.courseerpbackend.models.payload.auth.LoginPayload;
 import com.khazar.org.courseerpbackend.models.payload.auth.RefreshTokenPayload;
 import com.khazar.org.courseerpbackend.models.payload.auth.SignUpPayload;
 import com.khazar.org.courseerpbackend.models.response.LoginResponse;
+import com.khazar.org.courseerpbackend.service.branch.BranchService;
 import com.khazar.org.courseerpbackend.service.course.CourseService;
 import com.khazar.org.courseerpbackend.service.role.RoleService;
 import com.khazar.org.courseerpbackend.service.user.UserService;
@@ -32,6 +35,8 @@ import static com.khazar.org.courseerpbackend.models.enums.response.ErrorRespons
 @Slf4j
 public class AuthBusinessServiceImpl implements AuthBusinessService {
 
+    private final static String BRANCH_NAME_DEFAULT_PATTERN = "%s Default Branch";
+
     private final AuthenticationManager authenticationManager;
     private final AccessTokenManager accessTokenManager;
     private final RefreshTokenManager refreshTokenManager;
@@ -40,6 +45,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final CourseService courseService;
+    private final BranchService branchService;
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -83,7 +89,12 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
         Course course = CourseEntityMapper.INSTANCE.fromSignUpPayload(payload);
         courseService.insert(course);
 
+
+        Branch branch = populateDefaultBranchData(payload, course);
+        branchService.insert(branch);
     }
+
+
 
     @Override
     public void setAuthentication(String email) {
@@ -117,6 +128,15 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
                                 .rememberMe(isRememberMe)
                                 .build()
                 ))
+                .build();
+    }
+
+    private Branch populateDefaultBranchData(SignUpPayload payload, Course course) {
+        return Branch.builder()
+                .name(BRANCH_NAME_DEFAULT_PATTERN.formatted(payload.getCourseName()))
+                .status(BranchStatus.ACTIVE)
+                .address(payload.getAddress())
+                .courseId(course.getId())
                 .build();
     }
 }

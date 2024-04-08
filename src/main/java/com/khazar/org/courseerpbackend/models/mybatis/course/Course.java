@@ -14,6 +14,6 @@ import lombok.experimental.FieldDefaults;
 public class Course extends BaseEntity {
 
     String name;
-    CourseStatus courseStatus;
+    CourseStatus status;
 
 }
